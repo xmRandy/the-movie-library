@@ -1,0 +1,147 @@
+/* css/SignInPromptModal.css */
+
+/* Overlay that covers the entire screen and dims the background */
+.modal-overlay {
+  position: fixed; /* Stays in place relative to the viewport */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent dark background */
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  z-index: 1000; /* Ensure it's on top of all other content */
+  backdrop-filter: blur(5px); /* Optional: Adds a blur effect to the background */
+}
+
+/* The main content box of the modal */
+.modal-content {
+  background-color: #1a1a1a; /* Dark background */
+  padding: 2.5rem;
+  border-radius: 12px; /* Rounded corners */
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8); /* Strong shadow for depth */
+  width: 90%; /* Take 90% width on smaller screens */
+  max-width: 500px; /* Limit max width on larger screens */
+  position: relative; /* Needed for positioning the close button */
+  text-align: center;
+  color: white; /* Default text color */
+}
+
+/* Close button (the 'X') */
+.modal-close-button {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 2rem; /* Large 'X' */
+  color: #ccc; /* Light grey color */
+  cursor: pointer;
+  line-height: 1; /* Helps vertical alignment */
+  padding: 0.5rem;
+  transition: color 0.2s ease, background-color 0.2s ease;
+  border-radius: 50%; /* Make background round on hover */
+}
+
+.modal-close-button:hover {
+  color: white;
+  background-color: rgba(255, 255, 255, 0.1); /* Subtle hover effect */
+}
+
+/* Modal Title */
+.modal-title {
+  font-size: 2rem;
+  color: #007bff; /* Blue highlight */
+  margin-bottom: 1.5rem;
+}
+
+/* Modal Message Paragraph */
+.modal-message {
+  font-size: 1.1rem;
+  line-height: 1.5;
+  color: #ddd;
+  margin-bottom: 2rem;
+}
+
+/* Container for modal action buttons */
+.modal-actions {
+  display: flex;
+  flex-direction: column; /* Stack buttons vertically by default */
+  gap: 1rem; /* Space between buttons */
+}
+
+/* Base style for all modal buttons */
+.modal-button {
+  padding: 0.9rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  width: 100%; /* Full width within the modal content */
+}
+
+.modal-button:hover {
+  transform: translateY(-2px); /* Slight lift effect */
+}
+
+.modal-button:active {
+  transform: translateY(0); /* Press down effect */
+}
+
+/* Primary action button (e.g., Sign In) */
+.primary-button {
+  background-color: #e50914; /* Netflix red */
+  color: white;
+}
+
+.primary-button:hover {
+  background-color: #f40612; /* Darker red on hover */
+}
+
+/* Secondary action button (e.g., Continue as Guest) */
+.secondary-button {
+  background-color: #666; /* Grayish */
+  color: white;
+}
+
+.secondary-button:hover {
+  background-color: #888; /* Lighter gray on hover */
+}
+
+/* Responsive Adjustments for Modal */
+@media (max-width: 768px) {
+  .modal-content {
+    padding: 2rem;
+  }
+  .modal-title {
+    font-size: 1.8rem;
+  }
+  .modal-message {
+    font-size: 1rem;
+  }
+  .modal-button {
+    font-size: 1rem;
+    padding: 0.8rem 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-content {
+    padding: 1.5rem;
+  }
+  .modal-title {
+    font-size: 1.5rem;
+  }
+  .modal-message {
+    font-size: 0.95rem;
+  }
+  .modal-button {
+    font-size: 0.9rem;
+    padding: 0.7rem 1rem;
+  }
+}

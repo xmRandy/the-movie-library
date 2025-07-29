@@ -1,0 +1,268 @@
+.movie-card-link {
+    text-decoration: none; /* Removes the default underline from the link */
+    color: inherit; /* Ensures text color within the link is inherited from its parent */
+    display: block; /* Makes the entire link act as a block element */
+    height: 100%; /* Makes the link span the full height of its parent (the grid cell) */
+    width: 100%; /* Makes the link span the full width of its parent (the grid cell) */
+}
+
+
+.movie-card {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #1a1a1a;
+  transition: transform 0.2s;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.movie-card:hover {
+  transform: translateY(-5px);
+}
+
+.movie-poster {
+  position: relative;
+  aspect-ratio: 2/3;
+  width: 100%;
+}
+
+.movie-poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.movie-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.1),
+    rgba(0, 0, 0, 0.8)
+  );
+  opacity: 0;
+  transition: opacity 0.2s;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1rem;
+}
+
+.movie-card:hover .movie-overlay {
+  opacity: 1;
+}
+
+.favourite-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  color: white;
+  font-size: 1.5rem;
+  padding: 0.5rem;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.favourite-btn:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.favourite-btn.active {
+  color: #ff4757;
+}
+
+.rating-select {
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 0.5rem;
+}
+
+.movie-info {
+  padding: 1rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.movie-info h3 {
+  font-size: 1rem;
+  margin: 0;
+}
+
+.movie-info p {
+  color: #999;
+  font-size: 0.9rem;
+}
+
+.user-rating {
+  color: #ffd700;
+  font-size: 0.9rem;
+  margin-top: auto;
+}
+
+@media (max-width: 768px) {
+  .movie-card {
+    font-size: 0.9rem;
+  }
+
+  .movie-info {
+    padding: 0.75rem;
+  }
+
+  .favourite-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 1.2rem;
+  }
+}
+
+
+.auth-section {
+    max-width: 500px; /* Limit width of auth forms */
+    margin: 0 auto 3rem; /* Center and give space */
+    padding: 2rem;
+    box-sizing: border-box;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.auth-input {
+    padding: 0.8rem 1rem;
+    border: 1px solid #333;
+    border-radius: 4px;
+    background-color: #222;
+    color: white;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.auth-input:focus {
+    border-color: #007bff; /* Highlight on focus */
+}
+
+.auth-button {
+    background-color: #e50914; /* Netflix red */
+    color: white;
+    border: none;
+    padding: 0.9rem 1.5rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.auth-button:hover {
+    background-color: #f40612;
+    transform: translateY(-1px);
+}
+
+.auth-button:active {
+    transform: translateY(0);
+}
+
+.google-auth-button {
+    background-color: #4285F4; /* Google blue */
+}
+
+.google-auth-button:hover {
+    background-color: #357ae8;
+}
+
+.auth-error {
+    color: #ff4757; /* Red for errors */
+    text-align: center;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+}
+
+.auth-divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 1.5rem 0;
+    color: #aaa;
+}
+
+.divider-line {
+    flex-grow: 1;
+    height: 1px;
+    background-color: #444;
+}
+
+.divider-text {
+    padding: 0 1rem;
+    font-size: 0.9rem;
+}
+
+.auth-toggle-text {
+    text-align: center;
+    font-size: 0.95rem;
+    color: #ccc;
+}
+
+.toggle-link {
+    color: #007bff; /* Blue link */
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.toggle-link:hover {
+    color: #61dafb;
+}
+
+.sign-out-button {
+    background-color: #666;
+    margin-top: 1.5rem;
+}
+
+.sign-out-button:hover {
+    background-color: #888;
+}
+
+/* Responsive adjustments for new auth elements */
+@media (max-width: 768px) {
+    .auth-section {
+        padding: 1.5rem;
+    }
+    .auth-input, .auth-button {
+        font-size: 0.9rem;
+        padding: 0.7rem 1rem;
+    }
+}
+@media (max-width: 480px) {
+    .auth-section {
+        padding: 1rem;
+    }
+    .auth-input, .auth-button {
+        font-size: 0.85rem;
+        padding: 0.6rem 0.8rem;
+    }
+    .auth-error, .auth-toggle-text, .divider-text {
+        font-size: 0.8rem;
+    }
+}
