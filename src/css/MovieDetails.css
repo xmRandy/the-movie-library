@@ -1,390 +1,393 @@
 /* css/MovieDetails.css - Refactored and Consolidated */
 
 .movie-details-page {
-  color: white;
-  padding-bottom: 3rem;
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  background-color: #0d0d0d;
-  min-height: calc(100vh - 60px);
+    color: white;
+    padding-bottom: 3rem;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: #0d0d0d;
+    min-height: calc(100vh - 60px); /* Still good for overall page min-height relative to navbar */
+    padding-top: 0; /* NO PADDING ON THE PAGE ITSELF */
 }
 
 /* Loading, Error, Not Found messages */
 .movie-details-loading,
 .movie-details-error,
 .movie-details-not-found {
-  text-align: center;
-  font-size: 1.5rem;
-  padding: 50px;
-  color: #e50914;
-  margin-top: 60px;
+    text-align: center;
+    font-size: 1.5rem;
+    padding: 50px;
+    color: #e50914;
+    margin-top: 60px; /* This margin is fine for these specific messages */
 }
 
-/* Movie Header Section (Backdrop, Poster, Main Info) */
+/* Movie Header Section (Backdrop and Main Info) */
 .movie-header-backdrop {
-  position: relative;
-  width: 100%;
-  height: 60vh;
-  background-size: cover;
-  background-position: center;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  padding: 2rem;
-  box-sizing: border-box;
-  overflow: hidden;
+    position: relative;
+    width: 100%;
+    height: 60vh; /* Default desktop height */
+    min-height: 400px; /* Ensure a minimum height on desktop */
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: flex-end; /* Default desktop alignment */
+    justify-content: center;
+    padding: 2rem;
+    box-sizing: border-box;
+    overflow: hidden;
+    margin-top: 0px; /* Assuming navbar height is around 60px on desktop */
 }
 
 .backdrop-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.5) 50%, rgba(0, 0, 0, 0.1) 100%);
-  z-index: 1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.5) 50%, rgba(0, 0, 0, 0.1) 100%);
+    z-index: 1;
 }
 
 .movie-header-content {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  align-items: flex-end;
-  gap: 2rem;
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: flex-end; /* Default desktop alignment */
+    gap: 2rem;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .movie-poster-large {
-  width: 250px;
-  height: auto;
-  border-radius: 8px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
-  flex-shrink: 0;
+    width: 250px;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+    flex-shrink: 0;
 }
 
 .movie-info-header {
-  display: flex;
-  flex-direction: column;
-  color: white;
-  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.8);
+    display: flex;
+    flex-direction: column;
+    color: white;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.8);
 }
 
 .movie-info-header h1 {
-  font-size: 3.5rem;
-  margin-bottom: 0.5rem;
-  line-height: 1.1;
-  font-weight: bold;
+    font-size: 3.5rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.1;
+    font-weight: bold;
 }
 
 /* Favorite Badge on Details Page Header - Consolidated */
 .title-and-favorite {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 0.5rem;
 }
 
 .favourite-btn-details {
-  background-color: rgba(0, 0, 0, 0.6);
-  border: none;
-  border-radius: 50%;
-  color: white;
-  width: 50px;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2rem;
-  cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.2s ease;
-  flex-shrink: 0;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.6);
+    border: none;
+    border-radius: 50%;
+    color: white;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 }
 
 .favourite-btn-details:hover {
-  background-color: rgba(0, 0, 0, 0.8);
-  transform: scale(1.05);
+    background-color: rgba(0, 0, 0, 0.8);
+    transform: scale(1.05);
 }
 
 .favourite-btn-details.active {
-  color: #ff4757;
+    color: #ff4757;
 }
 
 .subtitle-info {
-  font-size: 1.2rem;
-  color: #ccc;
-  margin-bottom: 1rem;
-  display: flex;
-  gap: 1.5rem;
-  flex-wrap: wrap;
+    font-size: 1.2rem;
+    color: #ccc;
+    margin-bottom: 1rem;
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
 }
 
 .rating-info {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 1.4rem;
-  margin-bottom: 1.5rem;
-  font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.4rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
 }
 
 .star-icon {
-  color: #ffc107;
-  font-size: 1.5em;
+    color: #ffc107;
+    font-size: 1.5em;
 }
 
 .score {
-  color: white;
+    color: white;
 }
 
 .vote-count {
-  font-size: 0.9em;
-  color: #aaa;
+    font-size: 0.9em;
+    color: #aaa;
 }
 
 .genres {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.7rem;
-  margin-bottom: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+    margin-bottom: 2rem;
 }
 
 .genre-tag {
-  background-color: rgba(255, 255, 255, 0.15);
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.1s ease;
-  white-space: nowrap;
+    background-color: rgba(255, 255, 255, 0.15);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    white-space: nowrap;
 }
 
 .genre-tag:hover {
-  background-color: rgba(255, 255, 255, 0.3);
-  transform: translateY(-2px);
+    background-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
 }
 
 /* Main Body Content */
 .movie-body-content {
-  max-width: 1200px;
-  margin: 2rem auto;
-  padding: 0 2rem;
-  box-sizing: border-box;
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 2rem;
+    box-sizing: border-box;
 }
 
 .section-block {
-  margin-bottom: 3rem;
-  background-color: #1a1a1a;
-  padding: 1.5rem 2rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    margin-bottom: 3rem;
+    background-color: #1a1a1a;
+    padding: 1.5rem 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 .section-title {
-  font-size: 2rem;
-  color: #ffc107;
-  margin-bottom: 1.5rem;
-  padding-left: 15px;
-  border-left: 5px solid #ffc107;
-  font-weight: bold;
+    font-size: 2rem;
+    color: #ffc107;
+    margin-bottom: 1.5rem;
+    padding-left: 15px;
+    border-left: 5px solid #ffc107;
+    font-weight: bold;
 }
 
 .storyline-text {
-  font-size: 1.1rem;
-  line-height: 1.6;
-  color: #ddd;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #ddd;
 }
 
 /* Trailer Section */
 .trailer-section {
-  background-color: #0d0d0d;
-  padding: 0;
-  box-shadow: none;
+    background-color: #0d0d0d;
+    padding: 0;
+    box-shadow: none;
 }
 
 .trailer-section .section-title {
-  padding: 1.5rem 2rem 0;
+    padding: 1.5rem 2rem 0;
 }
 
 .video-player-wrapper {
-  position: relative;
-  width: 100%;
-  padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
-  height: 0;
-  overflow: hidden;
-  border-radius: 8px;
-  background-color: black;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+    height: 0;
+    overflow: hidden;
+    border-radius: 8px;
+    background-color: black;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
 }
 
 .video-player-wrapper iframe {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
 }
 
 /* Details List */
 .details-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1rem 2rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem 2rem;
 }
 
 .details-list li {
-  font-size: 1rem;
-  color: #ddd;
-  padding: 0.2rem 0;
+    font-size: 1rem;
+    color: #ddd;
+    padding: 0.2rem 0;
 }
 
 .details-list li strong {
-  color: white;
-  margin-right: 0.5rem;
-  font-weight: 600;
+    color: white;
+    margin-right: 0.5rem;
+    font-weight: 600;
 }
 
 .details-list li a {
-  color: #007bff;
-  text-decoration: none;
-  transition: color 0.2s;
+    color: #007bff;
+    text-decoration: none;
+    transition: color 0.2s;
 }
 .details-list li a:hover {
-  color: #61dafb;
-  text-decoration: underline;
+    color: #61dafb;
+    text-decoration: underline;
 }
 
 /* Cast Grid Styles - Consolidated */
 .cast-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 1rem;
-  margin-top: 1.5rem;
-  justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+    justify-content: center;
 }
 
 .cast-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  background-color: #000;
-  padding: 0.5rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background-color: #000;
+    padding: 0.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .cast-photo {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-bottom: 0.5rem;
-  border: 2px solid rgba(255, 255, 255, 0.1);
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 0.5rem;
+    border: 2px solid rgba(255, 255, 255, 0.1);
 }
 
 .cast-info {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.2;
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
 }
 
 .cast-name {
-  font-weight: bold;
-  font-size: 0.9rem;
-  color: white;
+    font-weight: bold;
+    font-size: 0.9rem;
+    color: white;
 }
 
 .cast-character {
-  font-size: 0.8rem;
-  color: #aaa;
+    font-size: 0.8rem;
+    color: #aaa;
 }
 
 /* Image Gallery - Consolidated */
 .image-gallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* Larger size for all images */
-  gap: 1.2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* Larger size for all images */
+    gap: 1.2rem;
 }
 
 .gallery-image {
-  width: 100%;
-  height: 140px; /* Adjust height for larger images */
-  border-radius: 6px;
-  object-fit: cover;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  cursor: pointer;
+    width: 100%;
+    height: 140px; /* Adjust height for larger images */
+    border-radius: 6px;
+    object-fit: cover;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
 }
 
 .gallery-image:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
 }
 
 /* Other Videos Grid - Consolidated */
 .other-videos-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* Larger video thumbnails */
-  gap: 1.2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* Larger video thumbnails */
+    gap: 1.2rem;
 }
 
 .video-thumbnail-wrapper {
-  position: relative;
-  width: 100%;
-  padding-bottom: 56.25%; /* 16:9 aspect ratio for video thumbnails */
-  height: 0;
-  overflow: hidden;
-  border-radius: 6px;
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio for video thumbnails */
+    height: 0;
+    overflow: hidden;
+    border-radius: 6px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 
 .video-thumbnail-wrapper img {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .video-thumbnail-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.4);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  transition: background-color 0.2s ease;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.2s ease;
 }
 
 .video-thumbnail-wrapper:hover .video-thumbnail-overlay {
-  background: rgba(0, 0, 0, 0.6);
+    background: rgba(0, 0, 0, 0.6);
 }
 
 .video-thumbnail-overlay .play-icon {
-  font-size: 3rem;
-  color: white;
-  text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
-  opacity: 0.9;
+    font-size: 3rem;
+    color: white;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+    opacity: 0.9;
 }
 
 .video-thumbnail-overlay .video-name {
-  font-size: 0.9rem;
-  color: #eee;
-  margin-top: 5px;
-  text-align: center;
-  padding: 0 5px;
-  line-height: 1.3;
+    font-size: 0.9rem;
+    color: #eee;
+    margin-top: 5px;
+    text-align: center;
+    padding: 0 5px;
+    line-height: 1.3;
 }
 
 /* View More Button and Container - Consolidated */
@@ -419,212 +422,265 @@
 
 /* Similar Movies Section - Consolidated */
 .similar-movies-section {
-  background-color: #0d0d0d;
-  padding-top: 1rem;
-  box-shadow: none;
+    background-color: #0d0d0d;
+    padding-top: 1rem;
+    box-shadow: none;
 }
 
 .similar-movies-section .section-title {
-  padding-top: 1rem;
+    padding-top: 1rem;
 }
 
 /* Reusing .movies-grid from Home.css. No need to redefine here if Home.css is imported globally.
-   If not, you'd copy the .movies-grid styles from Home.css here. */
+    If not, you'd copy the .movies-grid styles from Home.css here. */
 .similar-movies-grid {
-  padding: 0 0; /* Remove horizontal padding as the section itself already has it */
+    padding: 0 0; /* Remove horizontal padding as the section itself already has it */
 }
 
 
 /* Responsive adjustments - Consolidated and refined */
 @media (max-width: 992px) {
-  .movie-header-content {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 1rem;
-  }
-  .movie-info-header h1 {
-    font-size: 2.8rem;
-  }
-  .subtitle-info, .rating-info, .genres {
-    justify-content: center;
-  }
-  .movie-poster-large {
-    width: 180px;
-    margin-bottom: 1.5rem;
-  }
-  .movie-body-content {
-    padding: 0 1rem;
-  }
-  .section-title {
-    font-size: 1.8rem;
-  }
-  .storyline-text {
-    font-size: 1rem;
-  }
-  .favourite-btn-details { /* Specific for this breakpoint */
-    width: 40px;
-    height: 40px;
-    font-size: 1.5rem;
-  }
-  .cast-grid {
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-    gap: 0.8rem;
-  }
-  .cast-photo {
-    width: 80px;
-    height: 80px;
-  }
-  .image-gallery, .other-videos-grid { /* Applied to both */
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 1rem;
-  }
-  .gallery-image {
-    height: 120px;
-  }
+    .movie-header-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 1rem;
+    }
+    .movie-info-header h1 {
+        font-size: 2.8rem;
+    }
+    .subtitle-info, .rating-info, .genres {
+        justify-content: center;
+    }
+    .movie-poster-large {
+        width: 180px;
+        margin-bottom: 1.5rem;
+    }
+    .movie-body-content {
+        padding: 0 1rem;
+    }
+    .section-title {
+        font-size: 1.8rem;
+    }
+    .storyline-text {
+        font-size: 1rem;
+    }
+    .favourite-btn-details { /* Specific for this breakpoint */
+        width: 40px;
+        height: 40px;
+        font-size: 1.5rem;
+    }
+    .title-and-favorite {
+        gap: 1rem;
+    }
+    .cast-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 0.8rem;
+    }
+    .cast-photo {
+        width: 80px;
+        height: 80px;
+    }
+    .image-gallery, .other-videos-grid { /* Applied to both */
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 1rem;
+    }
+    .gallery-image {
+        height: 120px;
+    }
 }
 
 @media (max-width: 768px) {
-  .movie-header-backdrop {
-    height: 45vh;
-    padding: 1rem;
-  }
-  .movie-info-header h1 {
-    font-size: 2.2rem;
-  }
-  .subtitle-info {
-    font-size: 1rem;
-    gap: 1rem;
-  }
-  .rating-info {
-    font-size: 1.2rem;
-  }
-  .star-icon {
-    font-size: 1.3em;
-  }
-  .genre-tag {
-    padding: 0.4rem 0.8rem;
-    font-size: 0.8rem;
-  }
-  .details-list {
-    grid-template-columns: 1fr;
-  }
-  .section-block {
-    padding: 1rem 1.2rem;
-  }
-  .section-title {
-    font-size: 1.6rem;
-  }
-  .favourite-btn-details { /* Specific for this breakpoint */
-    width: 35px;
-    height: 35px;
-    font-size: 1.3rem;
-  }
-  .title-and-favorite {
-    gap: 1rem;
-  }
-  .cast-grid {
-    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
-    gap: 0.6rem;
-  }
-  .cast-photo {
-    width: 70px;
-    height: 70px;
-  }
-  .cast-name {
-    font-size: 0.85rem;
-  }
-  .cast-character {
-    font-size: 0.75rem;
-  }
-  .image-gallery, .other-videos-grid { /* Applied to both */
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: 0.8rem;
-  }
-  .gallery-image {
-    height: 90px;
-  }
+    /* NO PADDING ON THE PAGE ITSELF */
+    .movie-details-page {
+        padding-top: 0; /* Explicitly ensure no padding-top here */
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    /* Rework movie-header-backdrop for mobile */
+    .movie-header-backdrop {
+        /* NEW: Use min-height to ensure content fits, but allow it to grow */
+        min-height: calc(50vh + 0px); /* Base min-height + space for navbar overlay */
+        height: auto; /* Allow height to be determined by content */
+        padding: 1rem;
+        /* NEW: Align content to the top to ensure it's not hidden by navbar */
+        align-items: flex-start; /* Start content from the top of the backdrop */
+        justify-content: center; /* Center content horizontally */
+        flex-direction: column; /* Stack items vertically */
+        text-align: center; /* Center text */
+        /* NEW: Add padding-top to the backdrop itself to push content below the fixed navbar */
+        padding-top: calc(60px + 1rem); /* Navbar height + original top padding */
+    }
+
+    /* NEW: Hide the large movie poster on smaller screens */
+    .movie-poster-large {
+        display: none; /* Hide the poster on mobile */
+    }
+
+    .movie-info-header {
+        width: 100%; /* Ensure it takes full width when poster is hidden */
+        /* No specific text-align needed here if parent is text-align: center */
+    }
+
+    .movie-info-header h1 {
+        font-size: 2.2rem;
+        margin-top: 0; /* Reset margin to ensure it's at the top */
+        margin-bottom: 0.5rem; /* Re-add some space below title */
+    }
+    /* NEW: Adjust subtitle-info to be inline as per screenshot */
+    .subtitle-info {
+        font-size: 1rem;
+        gap: 0.5rem; /* Reduce gap between items */
+        justify-content: center; /* Center these items */
+        flex-direction: row; /* Keep items in a row */
+        flex-wrap: wrap; /* Allow wrapping if needed */
+        margin-bottom: 0.5rem; /* Reduce margin to bring rating closer */
+    }
+    /* NEW: Adjust rating-info to be inline as per screenshot */
+    .rating-info {
+        font-size: 1.2rem;
+        justify-content: center; /* Center rating info */
+        flex-direction: row; /* Keep items in a row */
+        gap: 0.5rem; /* Reduce gap */
+        margin-bottom: 0.5rem; /* Reduce margin to bring genres closer */
+    }
+    .star-icon {
+        font-size: 1.3em;
+    }
+    .genre-tag {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+    }
+    .genres {
+        justify-content: center; /* Center genre tags */
+        margin-bottom: 1.5rem; /* Reduce bottom margin to save space */
+    }
+    .details-list {
+        grid-template-columns: 1fr;
+    }
+    .section-block {
+        padding: 1rem 1.2rem;
+    }
+    .section-title {
+        font-size: 1.6rem;
+    }
+    .favourite-btn-details { /* Specific for this breakpoint */
+        width: 35px;
+        height: 35px;
+        font-size: 1.3rem;
+    }
+    .title-and-favorite {
+        gap: 0.5rem; /* Reduce gap between title and favorite button */
+        flex-direction: column; /* Stack title and favorite button vertically */
+        align-items: center; /* Center them */
+        margin-bottom: 0.5rem; /* Adjust margin */
+    }
+    .cast-grid {
+        grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+        gap: 0.6rem;
+    }
+    .cast-photo {
+        width: 70px;
+        height: 70px;
+    }
+    .cast-name {
+        font-size: 0.85rem;
+    }
+    .cast-character {
+        font-size: 0.75rem;
+    }
+    .image-gallery, .other-videos-grid { /* Applied to both */
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 0.8rem;
+    }
+    .gallery-image {
+        height: 90px;
+    }
 }
 
 @media (max-width: 480px) {
-  .movie-details-page {
-    padding-bottom: 2rem;
-  }
-  .movie-header-backdrop {
-    height: 40vh;
-    padding: 0.8rem;
-  }
-  .movie-poster-large {
-    width: 130px;
-    margin-bottom: 1rem;
-  }
-  .movie-info-header h1 {
-    font-size: 1.8rem;
-  }
-  .subtitle-info {
-    flex-direction: column;
-    gap: 0.4rem;
-  }
-  .rating-info {
-    flex-direction: column;
-    gap: 0.2rem;
-    margin-bottom: 1rem;
-  }
-  .genres {
-    gap: 0.5rem;
-  }
-  .genre-tag {
-    padding: 0.3rem 0.6rem;
-    font-size: 0.75rem;
-  }
-  .movie-body-content {
-    padding: 0 0.8rem;
-  }
-  .section-title {
-    font-size: 1.4rem;
-    padding-left: 10px;
-  }
-  .storyline-text {
-    font-size: 0.95rem;
-  }
-  .favourite-btn-details { /* Specific for this breakpoint */
-    width: 30px;
-    height: 30px;
-    font-size: 1.1rem;
-  }
-  .cast-grid {
-    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-    gap: 0.5rem;
-  }
-  .cast-photo {
-    width: 60px;
-    height: 60px;
-  }
-  .cast-name {
-    font-size: 0.8rem;
-  }
-  .cast-character {
-    font-size: 0.7rem;
-  }
-  .image-gallery, .other-videos-grid { /* Applied to both */
-    grid-template-columns: 1fr;
-  }
-  .gallery-image {
-    height: 180px;
-  }
-  .video-thumbnail-wrapper {
-    padding-bottom: 65%;
-  }
-  .video-thumbnail-overlay .play-icon {
-    font-size: 2.5rem;
-  }
-  .video-thumbnail-overlay .video-name {
-    font-size: 0.8rem;
-  }
-  .view-more-button { /* Now using view-more-button, no view-more-link */
-    font-size: 1rem;
-    padding: 0.4rem 0.8rem;
-  }
+    .movie-details-page {
+        padding-bottom: 2rem;
+        padding-top: 0; /* NO PADDING ON THE PAGE ITSELF */
+    }
+    .movie-header-backdrop {
+        /* NEW: Adjust min-height and padding-top for very small screens */
+        min-height: calc(60vh + 60px); /* Adjusted min-height for very small screens */
+        height: auto; /* Allow height to be determined by content */
+        padding: 0.8rem;
+        padding-top: calc(60px + 0.8rem); /* Navbar height + original top padding */
+    }
+    .movie-poster-large {
+        display: none; /* Ensure hidden */
+    }
+    .movie-info-header h1 {
+        font-size: 1.8rem;
+    }
+    .subtitle-info {
+        flex-direction: row; /* Keep row direction */
+        gap: 0.4rem;
+    }
+    .rating-info {
+        flex-direction: row; /* Keep row direction */
+        gap: 0.2rem;
+        margin-bottom: 1rem;
+    }
+    .genres {
+        gap: 0.5rem;
+    }
+    .genre-tag {
+        padding: 0.3rem 0.6rem;
+        font-size: 0.75rem;
+    }
+    .movie-body-content {
+        padding: 0 0.8rem;
+    }
+    .section-title {
+        font-size: 1.4rem;
+        padding-left: 10px;
+    }
+    .storyline-text {
+        font-size: 0.95rem;
+    }
+    .favourite-btn-details { /* Specific for this breakpoint */
+        width: 30px;
+        height: 30px;
+        font-size: 1.1rem;
+    }
+    .cast-grid {
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+        gap: 0.5rem;
+    }
+    .cast-photo {
+        width: 60px;
+        height: 60px;
+    }
+    .cast-name {
+        font-size: 0.8rem;
+    }
+    .cast-character {
+        font-size: 0.7rem;
+    }
+    .image-gallery, .other-videos-grid { /* Applied to both */
+        grid-template-columns: 1fr;
+    }
+    .gallery-image {
+        height: 180px;
+    }
+    .video-thumbnail-wrapper {
+        padding-bottom: 65%;
+    }
+    .video-thumbnail-overlay .play-icon {
+        font-size: 2.5rem;
+    }
+    .video-thumbnail-overlay .video-name {
+        font-size: 0.8rem;
+    }
+    .view-more-button { /* Now using view-more-button, no view-more-link */
+        font-size: 1rem;
+        padding: 0.4rem 0.8rem;
+    }
 }
 
 

@@ -130,6 +130,14 @@
     height: 32px;
     font-size: 1.2rem;
   }
+  .movie-overlay {
+    opacity: 1; /* Makes the overlay visible by default on mobile */
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0),    /* Make top gradient transparent */
+      rgba(0, 0, 0, 0.7)  /* Keep bottom gradient for text contrast */
+    );
+  }
 }
 
 
