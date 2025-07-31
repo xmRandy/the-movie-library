@@ -6,20 +6,20 @@
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    position: sticky; /* Keep navbar at top */
+    position: sticky;
     top: 0;
-    z-index: 1000; /* Ensure it's above other content */
+    z-index: 1000;
 }
 
 .navbar-brand {
     font-size: 1.5rem;
     font-weight: bold;
-    color: #fff; /* Ensure brand name is visible */
+    color: #fff;
     text-decoration: none;
 }
 
 .navbar-brand:hover {
-    color: #007bff; /* Hover effect for brand */
+    color: #007bff;
 }
 
 /* Desktop Navigation Links */
@@ -58,10 +58,10 @@
     border: none;
     cursor: pointer;
     height: 100%;
-    color: #007bff; /* Ensure button text color is blue */
-    font-size: 1rem; /* Match other nav links */
-    padding: 0.5rem 1rem; /* Match other nav links */
-    border-radius: 4px; /* Match other nav links */
+    color: #007bff;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
     display: flex;
     align-items: center;
     white-space: nowrap;
@@ -143,22 +143,20 @@
 
 /* --- Mobile Responsiveness --- */
 
-/* Hide desktop links and show hamburger on mobile */
 .hamburger-icon {
-    display: none; /* Hidden by default on desktop */
+    display: none;
     font-size: 1.5rem;
     color: #007bff;
     cursor: pointer;
 }
 
-/* Mobile Nav Menu Overlay */
 .mobile-nav-menu {
     position: fixed;
     top: 0;
     right: 0;
     width: 70%;
     max-width: 300px;
-    height: 100%; /* Full height of viewport */
+    height: 100%;
     background-color: #1a1a1a;
     box-shadow: -4px 0 10px rgba(0, 0, 0, 0.5);
     z-index: 1001;
@@ -168,12 +166,28 @@
     box-sizing: border-box;
     transform: translateX(100%);
     transition: transform 0.3s ease-out;
-    /* Removed overflow-y: auto from here, as we want specific sections to scroll */
 }
 
 .mobile-nav-menu.open {
     transform: translateX(0);
 }
+
+/* --- NEW STYLE FOR CLOSE ICON --- */
+.mobile-menu-close-icon {
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    font-size: 1.8rem;
+    color: #007bff;
+    cursor: pointer;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.mobile-menu-close-icon:hover {
+    transform: scale(1.2);
+    color: #fff;
+}
+/* --- END OF NEW STYLE --- */
 
 .mobile-nav-link {
     color: #007bff;
@@ -194,7 +208,6 @@
     background-color: rgba(255, 255, 255, 0.08);
 }
 
-/* Mobile Genre Toggle Button */
 .mobile-nav-genre-toggle button {
     background: none;
     border: none;
@@ -214,31 +227,26 @@
     background-color: rgba(255, 255, 255, 0.08);
 }
 
-/* Mobile Genre Sub-Menu */
 .mobile-genre-sub-menu {
     padding-left: 1rem;
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s ease-out;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    /* NEW: Add flex-shrink: 0; to prevent it from shrinking and causing overflow */
     flex-shrink: 0;
 }
 
 .mobile-genre-sub-menu.open {
-    /* We still need a max-height for the transition to work, but we'll apply overflow to the list itself */
-    max-height: 1500px; /* Keep a large value for transition */
+    max-height: 1500px;
 }
 
 .mobile-genres-list {
     display: flex;
     flex-direction: column;
     padding: 0.5rem 0;
-    /* NEW: Make this specific list scrollable */
-    max-height: calc(100vh - 200px); /* Adjust this value based on other content in the mobile menu */
-                                     /* 100vh - (navbar height + other link heights + padding) */
-    overflow-y: auto; /* Enable vertical scrolling */
-    -webkit-overflow-scrolling: touch; /* For smoother scrolling on iOS */
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .mobile-dropdown-item {
@@ -266,17 +274,13 @@
     color: #ff4757;
 }
 
-
-/* Media Queries for Responsiveness */
 @media (max-width: 768px) {
     .navbar-links.desktop-nav-links {
         display: none;
     }
-
     .hamburger-icon {
         display: block;
     }
-
     .navbar {
         padding: 0.8rem 1rem;
     }
