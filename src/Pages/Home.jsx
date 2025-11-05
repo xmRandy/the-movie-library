@@ -1,5 +1,4 @@
-// Pages/Home.jsx - Incremental Display for Faster First Paint
-
+// Pages/Home.jsx 
 import MovieCard from "../Components/MovieCard";
 import { useState, useEffect } from "react";
 import { searchMovies, getPopularMovies } from "../services/api";

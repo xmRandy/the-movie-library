@@ -1,4 +1,9 @@
-// Pages/GenrePage.jsx 
+// Pages/GenrePage.jsx - Clean routing logic:
+// - If all genres cleared → /genres (empty state)
+// - First selection from empty → /genre/:id (navbar-like)
+// - Multiple selections → /genres?ids=... (shareable)
+// Also: dedup error vs empty-state and reliable fresh fetch.
+
 import React, { useState, useEffect, useRef } from "react";
 import { useParams, useSearchParams, useNavigate } from "react-router-dom";
 import MovieCard from "../Components/MovieCard";
@@ -6,8 +11,6 @@ import { useGenreContext } from "../contexts/GenreContext";
 import { getMoviesByGenres } from "../services/api";
 import "../css/GenrePage.css";
 
-// Constants
-const MOVIES_PER_PAGE_API = 20;
 const MAX_GENRE_MOVIES_TO_FETCH = 500;
 
 function GenrePage() {
@@ -19,16 +22,15 @@ function GenrePage() {
   const [selectedGenreIds, setSelectedGenreIds] = useState([]);
   const [displayedMovies, setDisplayedMovies] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [error, setError] = useState(null); // only for real failures
   const [totalPages, setTotalPages] = useState(1);
   const [hasMore, setHasMore] = useState(true);
 
   const isInitialMount = useRef(true);
 
-  // --- Sync component state with URL parameters ---
+  // --- Sync component state with URL ---
   useEffect(() => {
-    // If ?ids exists, it overrides the route param
+    // If ?ids exists, it overrides the route :id
     const hasIdsKey = searchParams.has("ids");
     const idsFromQuery =
       searchParams
@@ -45,9 +47,8 @@ function GenrePage() {
 
     setSelectedGenreIds(uniqueSortedIds);
 
-    // Reset state for new selection
+    // Reset state for new selection source
     setDisplayedMovies([]);
-    setCurrentPage(1);
     setTotalPages(1);
     setHasMore(true);
     setError(null);
@@ -55,63 +56,43 @@ function GenrePage() {
     isInitialMount.current = false;
   }, [paramGenreId, searchParams]);
 
-  // --- Fetch movies based on selected genres and current page ---
+  // --- Fetch movies fresh for any (non-empty) selection change ---
   useEffect(() => {
     if (genresLoading) {
       setLoading(true);
       return;
     }
 
-    //  If no genres selected
+    // Empty selection → show empty state (not an error)
     if (selectedGenreIds.length === 0) {
       setDisplayedMovies([]);
       setHasMore(false);
       setLoading(false);
-      setError(null); // not an error, just empty
+      setError(null);
       return;
     }
 
-    //  Reset pagination state for new selections
-    if (currentPage !== 1) setCurrentPage(1);
-    setHasMore(true);
-    setError(null);
-
     const fetchMovies = async () => {
-      if (
-        currentPage > totalPages ||
-        displayedMovies.length >= MAX_GENRE_MOVIES_TO_FETCH
-      ) {
-        setHasMore(false);
-        setLoading(false);
-        return;
-      }
-
       setLoading(true);
-
       try {
-        const response = await getMoviesByGenres(selectedGenreIds, currentPage);
-        const newMovies = response.results || [];
+        // Always fetch page 1 fresh for the current selection
+        const response = await getMoviesByGenres(selectedGenreIds, 1);
+        const movies = response.results || [];
 
-        setDisplayedMovies((prevMovies) => {
-          const existingIds = new Set(prevMovies.map((m) => m.id));
-          const filteredNewMovies = newMovies.filter(
-            (m) => !existingIds.has(m.id)
-          );
-          return [...filteredNewMovies].slice(0, MAX_GENRE_MOVIES_TO_FETCH);
-        });
-
-        setTotalPages(response.total_pages || 1);
-
-        const moreAvailableFromApi = currentPage < (response.total_pages || 1);
-        const underHardCap =
-          displayedMovies.length + newMovies.length <
-          MAX_GENRE_MOVIES_TO_FETCH;
-        setHasMore(moreAvailableFromApi && underHardCap);
+        if (movies.length === 0) {
+          setDisplayedMovies([]);
+          setHasMore(false);
+          setError(null); // no results is not an error
+        } else {
+          setDisplayedMovies(movies.slice(0, MAX_GENRE_MOVIES_TO_FETCH));
+          setTotalPages(response.total_pages || 1);
+          setHasMore(response.page < (response.total_pages || 1));
+          setError(null);
+        }
       } catch (err) {
-        console.error("[GenrePage] Error fetching genre movies:", err);
-        setError(
-          "Failed to load movies for the selected genres. Please try again."
-        );
+        console.error("[GenrePage] Error fetching movies:", err);
+        setError("Failed to load movies for the selected genres. Please try again.");
+        setDisplayedMovies([]);
         setHasMore(false);
       } finally {
         setLoading(false);
@@ -120,45 +101,41 @@ function GenrePage() {
 
     fetchMovies();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedGenreIds, currentPage, genresLoading]);
+  }, [selectedGenreIds, genresLoading]);
 
   // --- Handle Genre Toggle ---
   const handleGenreToggle = (genreId) => {
+    const wasEmpty = selectedGenreIds.length === 0;
+
     const currentIds = new Set(selectedGenreIds);
-    if (currentIds.has(genreId)) {
-      currentIds.delete(genreId);
-    } else {
-      currentIds.add(genreId);
-    }
+    if (currentIds.has(genreId)) currentIds.delete(genreId);
+    else currentIds.add(genreId);
 
     const newIds = Array.from(currentIds);
 
-    //  Always write an 'ids' key so it overrides :id
-    if (newIds.length > 0) {
-      setSearchParams({ ids: newIds.join(",") });
-      //  Clean URL navigation
-      navigate(`/genres?ids=${newIds.join(",")}`);
-    } else {
-      // Keep ?ids= even if empty → means ignore :id
-      setSearchParams({ ids: "" });
-      navigate(`/genres?ids=`);
+    // Case A: user cleared all → go to /genres (empty state)
+    if (newIds.length === 0) {
+      setSearchParams({}); // remove ids key
+      navigate(`/genres`);
+      return;
     }
+
+    // Case B: user is selecting the first genre from empty → behave like navbar
+    if (wasEmpty && newIds.length === 1) {
+      const onlyId = newIds[0];
+      setSearchParams({}); // no ids key → route param is source of truth
+      navigate(`/genres/${onlyId}`);
+      return;
+    }
+
+    // Case C: multi-select (or changing existing multi) → use shareable query
+    setSearchParams({ ids: newIds.join(",") });
+    navigate(`/genres?ids=${newIds.join(",")}`);
   };
 
-  // --- Load More Movies ---
-  const handleLoadMore = () => {
-    if (!loading && hasMore) {
-      setCurrentPage((prevPage) => prevPage + 1);
-    }
-  };
-
-  // --- UI Conditions ---
   const showNoResultsMessage =
-    !loading && displayedMovies.length === 0 && selectedGenreIds.length > 0;
-  const showLoadMoreButton =
-    hasMore && !loading && displayedMovies.length > 0;
+    !loading && !error && displayedMovies.length === 0 && selectedGenreIds.length > 0;
 
-  // --- Render ---
   return (
     <div className="genre-page">
       <h1 className="genre-page-title">Explore Genres</h1>
@@ -185,11 +162,16 @@ function GenrePage() {
       {loading && displayedMovies.length === 0 && (
         <div className="loading">Loading movies...</div>
       )}
-      {error && <div className="error_message">{error}</div>}
-      {showNoResultsMessage && (
-        <div className="no-results">
-          No movies found for the selected genre(s). Please try different genres.
-        </div>
+
+      {/* Mutually exclusive: show real error OR empty-state */}
+      {error ? (
+        <div className="error_message">{error}</div>
+      ) : (
+        showNoResultsMessage && (
+          <div className="no-results">
+            No movies found for the selected genre(s). Please try different genres.
+          </div>
+        )
       )}
 
       <div className="movies-grid">
@@ -200,18 +182,6 @@ function GenrePage() {
 
       {loading && displayedMovies.length > 0 && (
         <div className="loading-more">Loading more movies...</div>
-      )}
-
-      {showLoadMoreButton && (
-        <div className="load-more-container">
-          <button
-            onClick={handleLoadMore}
-            className="load-more-button"
-            disabled={loading}
-          >
-            Load More
-          </button>
-        </div>
       )}
     </div>
   );
