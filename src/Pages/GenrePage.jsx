@@ -1,8 +1,4 @@
-// Pages/GenrePage.jsx - Clean routing logic:
-// - If all genres cleared → /genres (empty state)
-// - First selection from empty → /genre/:id (navbar-like)
-// - Multiple selections → /genres?ids=... (shareable)
-// Also: dedup error vs empty-state and reliable fresh fetch.
+// Pages/GenrePage.jsx 
 
 import React, { useState, useEffect, useRef } from "react";
 import { useParams, useSearchParams, useNavigate } from "react-router-dom";
@@ -22,7 +18,8 @@ function GenrePage() {
   const [selectedGenreIds, setSelectedGenreIds] = useState([]);
   const [displayedMovies, setDisplayedMovies] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null); // only for real failures
+  const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [hasMore, setHasMore] = useState(true);
 
@@ -30,7 +27,6 @@ function GenrePage() {
 
   // --- Sync component state with URL ---
   useEffect(() => {
-    // If ?ids exists, it overrides the route :id
     const hasIdsKey = searchParams.has("ids");
     const idsFromQuery =
       searchParams
@@ -40,15 +36,12 @@ function GenrePage() {
         .filter((n) => !isNaN(n)) || [];
 
     const idsFromParam = paramGenreId ? [parseInt(paramGenreId, 10)] : [];
-
-    // Choose source: query if present, else param
     const sourceIds = hasIdsKey ? idsFromQuery : idsFromParam;
     const uniqueSortedIds = Array.from(new Set(sourceIds)).sort((a, b) => a - b);
 
     setSelectedGenreIds(uniqueSortedIds);
-
-    // Reset state for new selection source
     setDisplayedMovies([]);
+    setCurrentPage(1);
     setTotalPages(1);
     setHasMore(true);
     setError(null);
@@ -56,14 +49,13 @@ function GenrePage() {
     isInitialMount.current = false;
   }, [paramGenreId, searchParams]);
 
-  // --- Fetch movies fresh for any (non-empty) selection change ---
+  // --- Fetch movies whenever selectedGenreIds or currentPage changes ---
   useEffect(() => {
     if (genresLoading) {
       setLoading(true);
       return;
     }
 
-    // Empty selection → show empty state (not an error)
     if (selectedGenreIds.length === 0) {
       setDisplayedMovies([]);
       setHasMore(false);
@@ -75,24 +67,27 @@ function GenrePage() {
     const fetchMovies = async () => {
       setLoading(true);
       try {
-        // Always fetch page 1 fresh for the current selection
-        const response = await getMoviesByGenres(selectedGenreIds, 1);
-        const movies = response.results || [];
+        const response = await getMoviesByGenres(selectedGenreIds, currentPage);
+        const newMovies = response.results || [];
 
-        if (movies.length === 0) {
-          setDisplayedMovies([]);
-          setHasMore(false);
-          setError(null); // no results is not an error
+        if (currentPage === 1) {
+          // fresh fetch
+          setDisplayedMovies(newMovies);
         } else {
-          setDisplayedMovies(movies.slice(0, MAX_GENRE_MOVIES_TO_FETCH));
-          setTotalPages(response.total_pages || 1);
-          setHasMore(response.page < (response.total_pages || 1));
-          setError(null);
+          // append for "Load More"
+          setDisplayedMovies((prev) => {
+            const ids = new Set(prev.map((m) => m.id));
+            const filtered = newMovies.filter((m) => !ids.has(m.id));
+            return [...prev, ...filtered].slice(0, MAX_GENRE_MOVIES_TO_FETCH);
+          });
         }
+
+        setTotalPages(response.total_pages || 1);
+        setHasMore(currentPage < (response.total_pages || 1));
+        setError(null);
       } catch (err) {
         console.error("[GenrePage] Error fetching movies:", err);
         setError("Failed to load movies for the selected genres. Please try again.");
-        setDisplayedMovies([]);
         setHasMore(false);
       } finally {
         setLoading(false);
@@ -101,36 +96,39 @@ function GenrePage() {
 
     fetchMovies();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedGenreIds, genresLoading]);
+  }, [selectedGenreIds, currentPage, genresLoading]);
 
   // --- Handle Genre Toggle ---
   const handleGenreToggle = (genreId) => {
     const wasEmpty = selectedGenreIds.length === 0;
-
     const currentIds = new Set(selectedGenreIds);
+
     if (currentIds.has(genreId)) currentIds.delete(genreId);
     else currentIds.add(genreId);
 
     const newIds = Array.from(currentIds);
 
-    // Case A: user cleared all → go to /genres (empty state)
     if (newIds.length === 0) {
-      setSearchParams({}); // remove ids key
+      setSearchParams({});
       navigate(`/genres`);
       return;
     }
 
-    // Case B: user is selecting the first genre from empty → behave like navbar
     if (wasEmpty && newIds.length === 1) {
       const onlyId = newIds[0];
-      setSearchParams({}); // no ids key → route param is source of truth
+      setSearchParams({});
       navigate(`/genres/${onlyId}`);
       return;
     }
 
-    // Case C: multi-select (or changing existing multi) → use shareable query
     setSearchParams({ ids: newIds.join(",") });
     navigate(`/genres?ids=${newIds.join(",")}`);
+  };
+
+  const handleLoadMore = () => {
+    if (!loading && hasMore) {
+      setCurrentPage((p) => p + 1);
+    }
   };
 
   const showNoResultsMessage =
@@ -163,7 +161,6 @@ function GenrePage() {
         <div className="loading">Loading movies...</div>
       )}
 
-      {/* Mutually exclusive: show real error OR empty-state */}
       {error ? (
         <div className="error_message">{error}</div>
       ) : (
@@ -182,6 +179,18 @@ function GenrePage() {
 
       {loading && displayedMovies.length > 0 && (
         <div className="loading-more">Loading more movies...</div>
+      )}
+
+      {hasMore && !loading && displayedMovies.length > 0 && (
+        <div className="load-more-container">
+          <button
+            onClick={handleLoadMore}
+            className="load-more-button"
+            disabled={loading}
+          >
+            Load More
+          </button>
+        </div>
       )}
     </div>
   );
