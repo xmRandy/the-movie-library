@@ -1,10 +1,10 @@
 // Pages/GenrePage.jsx 
-import React, { useState, useEffect, useRef } from 'react';
-import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
-import MovieCard from '../Components/MovieCard';
-import { useGenreContext } from '../contexts/GenreContext';
-import { getMoviesByGenres } from '../services/api';
-import '../css/GenrePage.css';
+import React, { useState, useEffect, useRef } from "react";
+import { useParams, useSearchParams, useNavigate } from "react-router-dom";
+import MovieCard from "../Components/MovieCard";
+import { useGenreContext } from "../contexts/GenreContext";
+import { getMoviesByGenres } from "../services/api";
+import "../css/GenrePage.css";
 
 // Constants
 const MOVIES_PER_PAGE_API = 20;
@@ -28,13 +28,14 @@ function GenrePage() {
 
   // --- Sync component state with URL parameters ---
   useEffect(() => {
-    // ✅ If ?ids exists, it overrides the route param
-    const hasIdsKey = searchParams.has('ids');
-    const idsFromQuery = searchParams
-      .get('ids')
-      ?.split(',')
-      .map(Number)
-      .filter((n) => !isNaN(n)) || [];
+    // If ?ids exists, it overrides the route param
+    const hasIdsKey = searchParams.has("ids");
+    const idsFromQuery =
+      searchParams
+        .get("ids")
+        ?.split(",")
+        .map(Number)
+        .filter((n) => !isNaN(n)) || [];
 
     const idsFromParam = paramGenreId ? [parseInt(paramGenreId, 10)] : [];
 
@@ -61,44 +62,56 @@ function GenrePage() {
       return;
     }
 
+    //  If no genres selected
     if (selectedGenreIds.length === 0) {
-      setLoading(false);
-      if (isInitialMount.current) {
-        setError('Please select one or more genres to see movies.');
-      }
+      setDisplayedMovies([]);
       setHasMore(false);
+      setLoading(false);
+      setError(null); // not an error, just empty
       return;
     }
 
+    //  Reset pagination state for new selections
+    if (currentPage !== 1) setCurrentPage(1);
+    setHasMore(true);
+    setError(null);
+
     const fetchMovies = async () => {
-      if (currentPage > totalPages || displayedMovies.length >= MAX_GENRE_MOVIES_TO_FETCH) {
+      if (
+        currentPage > totalPages ||
+        displayedMovies.length >= MAX_GENRE_MOVIES_TO_FETCH
+      ) {
         setHasMore(false);
         setLoading(false);
         return;
       }
 
       setLoading(true);
-      setError(null);
 
       try {
         const response = await getMoviesByGenres(selectedGenreIds, currentPage);
-        const newMovies = response.results;
+        const newMovies = response.results || [];
 
         setDisplayedMovies((prevMovies) => {
           const existingIds = new Set(prevMovies.map((m) => m.id));
-          const filteredNewMovies = newMovies.filter((m) => !existingIds.has(m.id));
-          return [...prevMovies, ...filteredNewMovies].slice(0, MAX_GENRE_MOVIES_TO_FETCH);
+          const filteredNewMovies = newMovies.filter(
+            (m) => !existingIds.has(m.id)
+          );
+          return [...filteredNewMovies].slice(0, MAX_GENRE_MOVIES_TO_FETCH);
         });
 
-        setTotalPages(response.total_pages);
+        setTotalPages(response.total_pages || 1);
 
-        const moreAvailableFromApi = currentPage < response.total_pages;
+        const moreAvailableFromApi = currentPage < (response.total_pages || 1);
         const underHardCap =
-          displayedMovies.length + newMovies.length < MAX_GENRE_MOVIES_TO_FETCH;
+          displayedMovies.length + newMovies.length <
+          MAX_GENRE_MOVIES_TO_FETCH;
         setHasMore(moreAvailableFromApi && underHardCap);
       } catch (err) {
-        console.error('[GenrePage] Error fetching genre movies:', err);
-        setError('Failed to load movies for the selected genres. Please try again.');
+        console.error("[GenrePage] Error fetching genre movies:", err);
+        setError(
+          "Failed to load movies for the selected genres. Please try again."
+        );
         setHasMore(false);
       } finally {
         setLoading(false);
@@ -120,14 +133,14 @@ function GenrePage() {
 
     const newIds = Array.from(currentIds);
 
-    // ✅ Always write an 'ids' key so it overrides :id
+    //  Always write an 'ids' key so it overrides :id
     if (newIds.length > 0) {
-      setSearchParams({ ids: newIds.join(',') });
-      // 🧭 Optional polish: move to /genres?ids=... to reflect the real state
-      navigate(`/genres?ids=${newIds.join(',')}`);
+      setSearchParams({ ids: newIds.join(",") });
+      //  Clean URL navigation
+      navigate(`/genres?ids=${newIds.join(",")}`);
     } else {
       // Keep ?ids= even if empty → means ignore :id
-      setSearchParams({ ids: '' });
+      setSearchParams({ ids: "" });
       navigate(`/genres?ids=`);
     }
   };
@@ -142,7 +155,8 @@ function GenrePage() {
   // --- UI Conditions ---
   const showNoResultsMessage =
     !loading && displayedMovies.length === 0 && selectedGenreIds.length > 0;
-  const showLoadMoreButton = hasMore && !loading && displayedMovies.length > 0;
+  const showLoadMoreButton =
+    hasMore && !loading && displayedMovies.length > 0;
 
   // --- Render ---
   return (
@@ -158,7 +172,7 @@ function GenrePage() {
             <button
               key={genre.id}
               className={`genre-filter-button ${
-                selectedGenreIds.includes(genre.id) ? 'active' : ''
+                selectedGenreIds.includes(genre.id) ? "active" : ""
               }`}
               onClick={() => handleGenreToggle(genre.id)}
             >
